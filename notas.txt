@@ -1,0 +1,124 @@
+* ModelInterfaces
+    * te permite crear una interfaz abstracta para diferentes modelos
+    * no usa un modelo o algoritmo en especifico
+    * IASRModel (Automatic Speech Recognition Model)
+        * define los metodos para un reconocimiento automatico de voz
+        * estos metodos se usan para obtener la transcripcion, ubicacion de las palabras y procesamiento del audio
+* Models
+    * define func para dif modelos de procesamiento (modelos de reconocimiento automático de voz (ASR), síntesis de voz (TTS) y traducción de texto)
+    * reconocimiento automático de voz (ASR)
+* utilsFileIO
+    * genera cadenas aleatorias de 20 caracteres
+    * string.ascii_lowercase para obtener todas las letras minúsculas del alfabeto.
+* WordMetric
+    * La función edit_distance_python2 utiliza una implementación específica de matriz
+      mientras que edit_distance_python utiliza la biblioteca numpy para mejorar el rendimiento
+      Ambas funciones devuelven la distancia de edición como un entero.
+    * calcula la diferencia entre dos cadenas
+    * edit_distance_python2
+        * crea una matriz de distancias y utiliza operaciones de inserción, eliminación y sustitución de caracteres para calcular la distancia de edición
+        * devuelve como un entero que representa la distancia de edición entre las dos cadenas.
+    * edit_distance_python(seq1, seq2)
+        * utiliza una matriz de numpy para almacenar las distancias
+        * usa insercion, eliminacion, y sustitucion de caracteres para actualizar los valores de la matriz
+        * devuelve un entero que representa la distancia de edición entre las dos secuencias
+* AIModels
+    * NeuralASR
+        * recibe un decodificador para convertir la salidas de modelo en transcripciones de audio
+          obtener la transcripcion del audio procesado y la ubicacion de las palabras en el audio
+        * usa un modelo de reconocimiento automatico del habla
+* RuleBasedModels
+    * EpitranPhonemConverter
+        * convierte de texto a fonema basado en el sistema epitran
+        * algoritmo usado es el sistema epitran
+    * EngPhonemConverter
+        * convierte el texto en ingles en su forma fonetica gracias a eng_to_ipa
+* WordMatching
+    * get_word_distance_matrix
+        * calcula una matriz de distancia de edicion entre palabras estimadas y reales
+        * usa WordMetrics.edit_distance_python de WordMetric para calcular la edicion entre cada
+          par de palabras estimadas
+        * devuelve una matriz que contiene la distancia de las palabras
+    * get_best_path_from_distance_matrix
+        * usa programacion lineal
+        * calcula la mejor ruta a traves de distancias
+        * biblioteca OR-TOOLS para minimizar las distancias total_phoneme_distance
+        * Devuelve un arreglo numpy con los índices mapeados de las palabras estimadas a las palabras reales.
+    * get_resulting_string
+        * Genera una lista de palabras mapeadas utilizando los índices mapeados y las palabras estimadas y reales.
+        * Las palabras que no tienen una coincidencia exacta se marcan con un token especial.
+        * Devuelve una lista de palabras mapeadas y una lista de los índices mapeados de las palabras estimadas.
+    * get_best_mapped_words
+        * Calcula las mejores palabras mapeadas entre las palabras estimadas y las palabras reales.
+        * calcular la matriz de distancias, encontrar la mejor ruta y generar las palabras mapeadas.
+        * Devuelve una lista de palabras mapeadas y una lista de los índices mapeados de las palabras estimadas.
+    * get_best_mapped_words_dtw
+        * Calcula las mejores palabras mapeadas utilizando la alineación de tiempo dinámico (DTW)
+        * encontrar la ruta óptima a través de la matriz de distancias.
+        * Devuelve una lista de palabras mapeadas y una lista de los índices mapeados de las palabras estimadas.
+    * getWhichLettersWereTranscribedCorrectly
+        * Determina qué letras de una palabra se transcribieron correctamente comparando la palabra real con la palabra transcrita
+        * Compara letra por letra y marca las letras correctas con 1 y las letras incorrectas con 0.
+        * Devuelve una lista que indica si cada letra fue transcrita correctamente.
+    * parseLetterErrorsToHTML
+        * Convierte los errores de letra en una representación HTML con colores para resaltar las letras correctas e incorrectas.
+        * Recibe una palabra real y una lista que indica si cada letra fue transcrita correctamente.
+        * Devuelve una representación HTML de la palabra con las letras incorrectas resaltadas en rojo y las letras correctas sin resaltar.
+* lambdaGetSample
+  usa modelos EpitranPhonemConverter y EngPhonemConverter
+    * TextDataset
+        * accede a elementos del conjunto de dato mediante __getitem__
+          que devuelve una linea del dataframe acorde al indice 
+        * obtiene la longitud total del conjunto de datos gracias a __len__
+    * lambda_handler
+        * obtiene la categoria e idioma solicitado
+        * se realiza una version fonetica generando un archivo JSON de la trans real
+    * getSentenceCategory
+        * devuelve la categoria de la oracion basado en num de palabras
+* lambdaTTS
+    * utiliza las celdas models, soundfile, json, AIModels y utilsFileIO para obtener el modelo de TTS
+    * uardar el audio generado como un archivo WAV,
+    * carga los datos JSON recibidos
+    * generar un nombre de archivo aleatorio y realizar operaciones de manejo de archivos.
+* PronunciationTrainer
+    * Modelo de reconocimiento automático del habla (ASR), a través de la función getASRModel(language) del módulo models
+    * convertidor de palabras a IPA
+    * EngPhonemConverter
+    * metrica de pronnunciacion
+    * Red neuronal para el reconocimiento automático del habla (ASR)
+    
+* arrayBuffer es una representación de los datos de audio en forma de matriz de bytes
+* ctx.decodeAudioData  convertir los datos codificados en formatos como WAV, MP3
+*fetch = peticiones,consumir el backend desde frondend
+
+
+lambdaTTS = muestra cómo utilizar un modelo de TTS para convertir texto en audio y proporcionar el resultado en formato WAV base64 a través de una respuesta HTTP.
+lambdaGetSample = En resumen, este código muestra cómo utilizar un conjunto de datos de texto, realizar selecciones aleatorias de muestras en una categoría especificada y obtener las transcripciones reales y fonémicas de las muestras seleccionadas. La función lambda_handler es el punto de entrada principal que procesa las solicitudes y devuelve las respuestas en formato JSON.
+costo =cantidad de operaciones necesarias para transformar una secuencia en otra. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+USO DE EPITRAN
+lambdaGetSample = lambda_database,lambda_ipa_converter['en']
